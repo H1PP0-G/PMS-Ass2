@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System - Part 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Inventory Management System</h1>
+
+        <section class="add-item">
+            <h2>Add/Edit Item</h2>
+            <!-- Inputs for item details -->
+            <div class="form-group">
+                <label for="itemId">Item ID (Unique):</label>
+                <input type="text" id="itemId" required>
+            </div>
+            <div class="form-group">
+                <label for="itemName">Item Name:</label>
+                <input type="text" id="itemName" required>
+            </div>
+            <div class="form-group">
+                <label for="itemCategory">Category:</label>
+                <select id="itemCategory" required>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="itemQuantity">Quantity:</label>
+                <input type="number" id="itemQuantity" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="itemPrice">Price:</label>
+                <input type="number" id="itemPrice" min="0.01" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="itemSupplier">Supplier Name:</label>
+                <input type="text" id="itemSupplier" required>
+            </div>
+            <div class="form-group">
+                <label for="itemStatus">Stock Status:</label>
+                <select id="itemStatus" required>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="itemPopular">
+                <label for="itemPopular">Popular Item?</label>
+            </div>
+            <div class="form-group">
+                <label for="itemComment">Comment (Optional):</label>
+                <textarea id="itemComment" rows="3"></textarea>
+            </div>
+            <button id="saveItemBtn">Add Item</button>
+            <button id="updateItemBtn" style="display: none;">Update Item</button> <!-- Hidden initially -->
+            <button id="clearFormBtn">Clear Form</button>
+
+            <div id="formMessage" class="message"></div> <!-- For form-related feedback -->
+        </section>
+
+        <section class="search-delete-item">
+            <h2>Search & Delete Item</h2>
+            <div class="form-group">
+                <label for="searchItemName">Search/Delete by Item Name:</label>
+                <input type="text" id="searchItemName" placeholder="Enter item name">
+                <button id="searchBtn">Search</button>
+                <button id="deleteBtn">Delete</button>
+            </div>
+            <div id="searchMessage" class="message"></div> <!-- For search/delete feedback -->
+        </section>
+
+        <section class="item-lists">
+            <h2>Inventory List</h2>
+            <button id="showAllItemsBtn">Show All Items</button>
+            <button id="showPopularItemsBtn">Show Popular Items</button>
+            <div id="inventoryList" class="item-table-container">
+                <!-- Inventory items will be displayed here -->
+            </div>
+        </section>
+
+        <section class="interactive-feedback">
+            <h2>Application Feedback</h2>
+            <div id="appFeedback" class="message"></div> <!-- General app feedback -->
+        </section>
+    </div>
+
+    <!-- Link your TypeScript file AFTER all HTML elements -->
+      <script type="module" src="dist/app.js"></script>
+    </body>
+</html>

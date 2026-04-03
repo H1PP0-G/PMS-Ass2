@@ -1,28 +1,29 @@
-// Defines an enum for product categories
-export enum CategoryEnum {
-  Electronics = "Electronics",
-  Furniture = "Furniture",
-  Clothing = "Clothing",
-  Tools = "Tools",
-  Miscellaneous = "Miscellaneous"
-}
+// Define Union Types instead of Enums for simplicity
+export type CategoryType = "Electronics" | "Furniture" | "Clothing" | "Tools" | "Miscellaneous";
+export type StockStatusType = "In Stock" | "Low Stock" | "Out of Stock";
 
-// Defines an enum for stock status
-export enum StockStatusEnum {
-  InStock = "In Stock",
-  LowStock = "Low Stock",
-  OutOfStock = "Out of Stock"
-}
+// Class definition with a constructor 
+export class InventoryItem {
+    id: string;
+    name: string;
+    category: CategoryType;
+    quantity: number;
+    price: number;
+    supplier: string;
+    status: StockStatusType;
+    popular: boolean;
+    comment: string;
 
-// Defines the interface for an inventory item
-export interface InventoryItem {
-  id: string; // Unique identifier, cannot be changed after initial entry
-  name: string; // Product name
-  category: CategoryEnum; // Category, uses the enum
-  quantity: number; // Quantity in stock
-  price: number; // Price of the item
-  supplier: string; // Name of the supplier
-  status: StockStatusEnum; // Stock status, uses the enum
-  popular: boolean; // Indicates if the item is popular (Yes/No)
-  comment?: string; // Optional comment
+    constructor(id: string, name: string, category: CategoryType, quantity: number, price: number, supplier: string, status: StockStatusType, popular: boolean, comment: string) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.quantity = quantity;
+        this.price = price;
+        this.supplier = supplier;
+        this.status = status;
+        this.popular = popular;
+        // If no comment is provided, default to an empty string
+        this.comment = comment ? comment : ""; 
+    }
 }
