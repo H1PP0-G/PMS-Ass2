@@ -1,0 +1,81 @@
+<div class="manage-box">
+  <h2>Inventory Management</h2>
+
+  <!-- 1. Feedback information area -->
+  <div *ngIf="feedbackMessage" [style.color]="isError ? '#e74c3c' : '#27ae60'" class="feedback">
+    {{ feedbackMessage }}
+  </div>
+
+  <!-- 2. Customized deletion confirmation box  -->
+  <div *ngIf="showDeleteConfirm" class="confirm-overlay">
+    <p>Make sure to permanently delete the item "<strong>{{letItem.name}}</strong>" </p>
+    <button (click)="executeDelete()" class="btn-danger">delete ok</button>
+    <button (click)="showDeleteConfirm = false" class="btn-secondary">cancel</button>
+  </div>
+
+  <!-- 3. region formularza -->
+  <div class="form-container">
+    <div class="input-group">
+      <label>Item ID (Unique) *</label>
+      <input type="text" [(ngModel)]="letItem.id" placeholder="for example: 001">
+    </div>
+
+    <div class="input-group">
+      <label>Item Name *</label>
+      <input type="text" [(ngModel)]="letItem.name" placeholder="for example: Laptop">
+    </div>
+
+    <div class="input-group">
+      <label>Category</label>
+      <select [(ngModel)]="letItem.category">
+        <option value="Electronics">Electronics</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Tools">Tools</option>
+        <option value="Miscellaneous">Miscellaneous</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Quantity & Price</label>
+      <div style="display: flex; gap: 10px;">
+        <input type="number" [(ngModel)]="letItem.quantity" placeholder="number ">
+        <input type="number" [(ngModel)]="letItem.price" placeholder="price">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Supplier Name</label>
+      <input type="text" [(ngModel)]="letItem.supplierName">
+    </div>
+
+    <div class="input-group">
+      <label>Stock Status</label>
+      <select [(ngModel)]="letItem.stockStatus">
+        <option value="In Stock">In Stock</option>
+        <option value="Low Stock">Low Stock</option>
+        <option value="Out of Stock">Out of Stock</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Popular Item?</label>
+      <select [(ngModel)]="letItem.popularItem">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Comment</label>
+      <textarea [(ngModel)]="letItem.comment"></textarea>
+    </div>
+
+    <!-- 按钮组 -->
+    <div class="button-group">
+      <button (click)="onAdd()" class="btn-primary">Add Item</button>
+      <button (click)="onUpdate()" class="btn-warning">Update By Name</button>
+      <button (click)="onDeleteRequest()" class="btn-danger">Delete By Name</button>
+    </div>
+  </div>
+</div>

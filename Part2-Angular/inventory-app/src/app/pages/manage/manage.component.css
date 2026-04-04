@@ -1,0 +1,12 @@
+.manage-box { background: white; padding: 20px; border-radius: 8px; }
+.input-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+label { font-weight: bold; margin-bottom: 5px; color: #34495e; }
+input, select, textarea { padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+.button-group { display: flex; gap: 10px; margin-top: 20px; }
+button { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btn-primary { background: #3498db; color: white; }
+.btn-warning { background: #f1c40f; color: white; }
+.btn-danger { background: #e74c3c; color: white; }
+.btn-secondary { background: #95a5a6; color: white; }
+.feedback { margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; text-align: center; }
+.confirm-overlay { background: #fff3cd; padding: 20px; border: 1px solid #ffeeba; border-radius: 8px; margin-bottom: 20px; text-align: center; }

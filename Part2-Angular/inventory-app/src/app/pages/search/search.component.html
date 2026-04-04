@@ -1,0 +1,42 @@
+<div class="search-box">
+  <h2>Inventory List & Search</h2>
+
+  <!-- SEARCH -->
+  <div class="controls">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Search by item name...">
+    
+    <div class="filter-buttons">
+      <button (click)="viewType = 'all'" [class.active]="viewType === 'all'">All Items</button>
+      <button (click)="viewType = 'popular'" [class.active]="viewType === 'popular'">Popular Items Only</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Display region -->
+  <div class="items-list">
+    
+    <!-- 1 Display all filtered items -->
+    <div *ngIf="viewType === 'all'">
+      <h3>Showing All Matching Items</h3>
+      <div *ngFor="let item of getFilteredItems()" class="item-card">
+        <h4>{{item.name}} <small>({{item.id}})</small></h4>
+        <p><strong>Category:</strong> {{item.category}} | <strong>Price:</strong> ${{item.price}}</p>
+        <p><strong>Stock:</strong> {{item.stockStatus}} | <strong>Quantity:</strong> {{item.quantity}}</p>
+        <p *ngIf="item.comment"><i>"{{item.comment}}"</i></p>
+      </div>
+      <p *ngIf="getFilteredItems().length === 0">No items found in the database.</p>
+    </div>
+
+    <!--  Show only the popular items -->
+    <div *ngIf="viewType === 'popular'">
+      <h3> Showing Popular Items Only</h3>
+      <div *ngFor="let item of getPopularItems()" class="item-card popular">
+        <h4>{{item.name}} <small>({{item.id}})</small></h4>
+        <p><strong>Price:</strong> ${{item.price}} | <strong>Category:</strong> {{item.category}}</p>
+      </div>
+      <p *ngIf="getPopularItems().length === 0">No popular items match your search.</p>
+    </div>
+
+  </div>
+</div>
