@@ -1,1 +1,17 @@
-<p>privacy works!</p>
+<div class="content-box">
+  <h2>Privacy & Security Analysis 🛡️</h2>
+  <section>
+    <h3>1. Data Persistence & Privacy</h3>
+    <p>This project adopts "session-based storage". All inventory data is only saved in the browser's memory and will not be uploaded to any backend server. This means that once the browser tab is closed, the data will be automatically cleared, thereby maximizing the protection of user privacy and avoiding the risk of data leakage.</p>
+  </section>
+
+  <section>
+    <h3>2. Input Validation (Security)</h3>
+    <p>To prevent the input of illegal data, we have employed Angular's two-way binding and TypeScript's type checking. All numeric fields, such as price and quantity, have undergone strict type validation to ensure that no malicious scripts or invalid data are executed.</p>
+  </section>
+
+  <section>
+    <h3>3. XSS (Cross-Site Scripting) Prevention</h3>
+    <p>By using Angular's interpolation syntax ({{ value }}), the system automatically escapes the rendered content, preventing potential cross-site scripting attacks and ensuring the security of the user interface.</p>
+  </section>
+</div>

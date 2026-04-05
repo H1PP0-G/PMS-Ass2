@@ -1,0 +1,6 @@
+.home-container { text-align: center; padding: 40px 20px; }
+h1 { color: #2c3e50; font-size: 2.5rem; }
+.lead { color: #7f8c8d; font-size: 1.2rem; margin-bottom: 40px; }
+.info-cards { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.card { background: white; padding: 20px; border-radius: 8px; width: 250px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.cta-button { background: #3498db; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; }
