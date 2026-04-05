@@ -35,18 +35,37 @@ export class ManageComponent {
   constructor(public invService: InventoryService) {}
 
   // add item
-  onAdd() {
-    // Ensure that all required fields are not empty
-    if (this.letItem.id === "" || this.letItem.name === "") {
-      this.showFeedback("Error: ID and Name are required!", true);
+onAdd() {
+    // 1. Basic mandatory field validation (ID, Name, SupplierName)
+    // Check if ID, name and supplier name are not empty
+    if (!this.letItem.id || !this.letItem.name || !this.letItem.supplierName) {
+      this.showFeedback("Error: ID, Name, and Supplier are required!", true);
       return;
     }
 
-    let success = this.invService.addItem({ ...this.letItem });
+    // 2. Quantity Verification (Quantity)
+    // Verify if it is a valid number and cannot be negative
+    if (isNaN(Number(this.letItem.quantity)) || this.letItem.quantity < 0) {
+      this.showFeedback("Error: Quantity must be a valid non-negative number!", true);
+      return;
+    }
+
+    // 3. Price Verification (Price)
+    // Verify if it is a valid number and must be greater than 0
+    if (isNaN(Number(this.letItem.price)) || this.letItem.price <= 0) {
+      this.showFeedback("Error: Price must be a valid number greater than zero!", true);
+      return;
+    }
+
+    //  All checks have been passed. The data will be saved by calling the Service.
+
+    const success = this.invService.addItem({ ...this.letItem });
+
     if (success) {
       this.showFeedback("Success: Item added to inventory!", false);
-      this.resetForm();
+      this.resetForm(); // 添加成功后清空表单，提升用户体验
     } else {
+      // If the Service returns false, it indicates that the ID already exists
       this.showFeedback("Error: Item ID must be unique!", true);
     }
   }
