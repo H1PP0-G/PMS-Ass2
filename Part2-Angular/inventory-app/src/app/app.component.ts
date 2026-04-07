@@ -1,3 +1,8 @@
+
+/**
+ * Author: Wenbo He
+ * Student ID: 24832151
+ * Assessment: PROG2005 Assessment 2 (A2) - Part 2*/
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router'; // Make sure these two are imported.
 

@@ -53,8 +53,10 @@
                 <label for="itemComment">Comment (Optional):</label>
                 <textarea id="itemComment" rows="3"></textarea>
             </div>
+            
+            <!-- 修复：去掉了 style="display: none;"，让 Update 按钮显示出来 -->
             <button id="saveItemBtn">Add Item</button>
-            <button id="updateItemBtn" style="display: none;">Update Item</button> <!-- Hidden initially -->
+            <button id="updateItemBtn">Update Item</button> 
             <button id="clearFormBtn">Clear Form</button>
 
             <div id="formMessage" class="message"></div> <!-- For form-related feedback -->
@@ -87,6 +89,6 @@
     </div>
 
     <!-- Link your TypeScript file AFTER all HTML elements -->
-      <script type="module" src="dist/app.js"></script>
-    </body>
+    <script type="module" src="dist/app.js"></script>
+</body>
 </html>

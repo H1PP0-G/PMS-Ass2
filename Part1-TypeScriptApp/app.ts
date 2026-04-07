@@ -3,7 +3,7 @@
  * Student ID: 24832151
  * Assessment: PROG2005 Assessment 2 (A2) - Part 1
  * Description: A standalone TypeScript-based Inventory Management System that 
- *              without server-side interaction.
+ *              functions without server-side interaction.
  */
 
 import { InventoryItem, CategoryType, StockStatusType } from './interfaces.js';
@@ -18,8 +18,7 @@ const feedbackEl = document.getElementById('appFeedback') as HTMLElement;
 const formMsgEl = document.getElementById('formMessage') as HTMLElement;
 const listEl = document.getElementById('inventoryList') as HTMLElement;
 
-// --- Initialization and  functions ---
-
+// --- Initialization and functions ---
 
 function populateSelects(): void {
     const catSelect = document.getElementById('itemCategory') as HTMLSelectElement;
@@ -45,7 +44,7 @@ function populateSelects(): void {
  * Display interaction feedback messages on the page.
  * @param element - The HTML element where the message will be inserted.
  * @param msg - String representing the message content.
- * @param isError - Boolean value. If true, it displays red (indicating an error); if false, it displays green (indicating success).
+ * @param isError - Boolean value. If true, it displays red; if false, it displays green.
  */
 function showMessage(element: HTMLElement, msg: string, isError: boolean): void {
     element.innerHTML = msg;
@@ -53,13 +52,11 @@ function showMessage(element: HTMLElement, msg: string, isError: boolean): void 
     element.style.display = "block";
 }
 
-
-
-/**  Traverse the entire inventory array and generate a dynamic HTML table.*/
+/** Traverse the entire inventory array and generate a dynamic HTML table.*/
 function showInventoryList(): void {
     let tableHtml: string = `
         <table border="1" style="width:100%; border-collapse: collapse;">
-            <tr><th>ID</th><th>Name</th><th>Category</th><th>Qty</th><th>Price</th><th>Status</th><th>Popular</th></tr>
+            <tr><th>ID</th><th>Name</th><th>Category</th><th>Qty</th><th>Price</th><th>Supplier</th><th>Status</th><th>Popular</th></tr>
     `;
     
     inventory.forEach(item => {
@@ -69,7 +66,8 @@ function showInventoryList(): void {
                 <td>${item.name}</td>
                 <td>${item.category}</td>
                 <td>${item.quantity}</td>
-                <td>$${item.price}</td>
+                <td>$${item.price.toFixed(2)}</td>
+                <td>${item.supplier}</td>
                 <td>${item.status}</td>
                 <td>${item.popular ? "Yes" : "No"}</td>
             </tr>
@@ -82,8 +80,7 @@ function showInventoryList(): void {
 
 /**
 * Add new project logic.
-* Include: 1. Obtain form input; 2. Verify required fields; 3. Check for uniqueness of ID;
-* 4. Perform checks on numerical types; 5. Instantiate the InventoryItem object and store it in the array. */
+*/
 function addItem(): void {
     const idIn = document.getElementById('itemId') as HTMLInputElement;
     const nameIn = document.getElementById('itemName') as HTMLInputElement;
@@ -95,19 +92,19 @@ function addItem(): void {
     const popIn = document.getElementById('itemPopular') as HTMLInputElement;
     const comIn = document.getElementById('itemComment') as HTMLTextAreaElement;
 
-    const id = idIn.value;
-    const name = nameIn.value;
+    const id = idIn.value.trim();
+    const name = nameIn.value.trim();
     const cat = catIn.value as CategoryType;
     const qty = parseInt(qtyIn.value);
     const price = parseFloat(priceIn.value);
-    const sup = supIn.value;
+    const sup = supIn.value.trim();
     const stat = statIn.value as StockStatusType;
     const pop = popIn.checked;
-    const com = comIn.value;
+    const com = comIn.value.trim();
 
-
-    if (id === "" || name === "" || isNaN(qty) || isNaN(price)) {
-        showMessage(formMsgEl, "Error: Fill all required fields!", true);
+    //  supplier Make sure all required fields have been filled in.
+    if (id === "" || name === "" || isNaN(qty) || isNaN(price) || sup === "") {
+        showMessage(formMsgEl, "Error: Fill all required fields (including Supplier)!", true);
         return;
     }
 
@@ -126,7 +123,7 @@ function addItem(): void {
 
     // Validation of numerical validity
     if (isNaN(qty) || qty < 0 || isNaN(price) || price <= 0) {
-        showMessage(formMsgEl, "Error: Quantity and Price must be valid numbers!", true);
+        showMessage(formMsgEl, "Error: Quantity and Price must be valid positive numbers!", true);
         return;
     }
 
@@ -143,19 +140,23 @@ function addItem(): void {
 
 /**
 * Search function.
-* Filter the inventory array based on the "product name" entered by the user in the search box, and display the matching results in real time.
-* If no matching items are found, an error message will be displayed. */
+*/
 function searchItem(): void {
     const searchNameIn = document.getElementById('searchItemName') as HTMLInputElement;
-    const targetName = searchNameIn.value.toLowerCase();
+    const targetName = searchNameIn.value.trim().toLowerCase();
     
+    if (targetName === "") {
+        showMessage(feedbackEl, "Please enter a name to search.", true);
+        return;
+    }
+
     const results = inventory.filter(item => item.name.toLowerCase().includes(targetName));
 
     if (results.length > 0) {
         let tableHtml = `<h3>Search Results</h3><table border="1" style="width:100%; border-collapse: collapse;">
                          <tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th></tr>`;
         results.forEach(item => {
-            tableHtml += `<tr><td>${item.id}</td><td>${item.name}</td><td>${item.category}</td><td>$${item.price}</td></tr>`;
+            tableHtml += `<tr><td>${item.id}</td><td>${item.name}</td><td>${item.category}</td><td>$${item.price.toFixed(2)}</td></tr>`;
         });
         tableHtml += "</table>";
         listEl.innerHTML = tableHtml;
@@ -167,10 +168,15 @@ function searchItem(): void {
 
 /**
 * Update the existing project.
-* Locate the product by its name. If found, modify the object based on the "quantity" and "price" currently filled in the form. */
+*/
 function updateItem(): void {
-    const searchNameIn = document.getElementById('searchItemName') as HTMLInputElement;
-    const targetName = searchNameIn.value;
+    const nameIn = document.getElementById('itemName') as HTMLInputElement;
+    const targetName = nameIn.value.trim();
+
+    if (targetName === "") {
+        showMessage(formMsgEl, "Error: Please enter the Item Name in the form to update!", true);
+        return;
+    }
 
     let foundItem: InventoryItem | null = null;
     for (let item of inventory) {
@@ -183,21 +189,39 @@ function updateItem(): void {
     if (foundItem) {
         const qtyIn = document.getElementById('itemQuantity') as HTMLInputElement;
         const priceIn = document.getElementById('itemPrice') as HTMLInputElement;
+        const catIn = document.getElementById('itemCategory') as HTMLSelectElement;
+        const statIn = document.getElementById('itemStatus') as HTMLSelectElement;
         
-        if (qtyIn.value !== "") foundItem.quantity = parseInt(qtyIn.value);
-        if (priceIn.value !== "") foundItem.price = parseFloat(priceIn.value);
+        const newQty = parseInt(qtyIn.value);
+        const newPrice = parseFloat(priceIn.value);
 
-        showMessage(feedbackEl, `Item '${targetName}' updated!`, false);
+        if (isNaN(newQty) || newQty < 0 || isNaN(newPrice) || newPrice <= 0) {
+            showMessage(formMsgEl, "Error: Quantity and Price must be valid numbers!", true);
+            return;
+        }
+
+        
+        foundItem.quantity = newQty;
+        foundItem.price = newPrice;
+        foundItem.category = catIn.value as CategoryType;
+        foundItem.status = statIn.value as StockStatusType;
+
+        showMessage(formMsgEl, `Success: Item '${targetName}' updated successfully!`, false);
         showInventoryList();
     } else {
-        showMessage(feedbackEl, "Item name not found for update!", true);
+        showMessage(formMsgEl, `Error: Item '${targetName}' not found in inventory!`, true);
     }
 }
 
 /** Remove project logic.*/
 function deleteItem(): void {
     const searchNameIn = document.getElementById('searchItemName') as HTMLInputElement;
-    const targetName = searchNameIn.value;
+    const targetName = searchNameIn.value.trim();
+
+    if (targetName === "") {
+        showMessage(feedbackEl, "Please enter a name to delete.", true);
+        return;
+    }
 
     let index = -1;
     for (let i = 0; i < inventory.length; i++) {
@@ -208,7 +232,6 @@ function deleteItem(): void {
     }
 
     if (index !== -1) {
-        // Create an interactive confirmation UI
         feedbackEl.innerHTML = `
             <div style="border:1px solid orange; padding:10px; margin-top:10px;">
                 <p>Are you sure you want to delete "${targetName}"? 
@@ -217,7 +240,6 @@ function deleteItem(): void {
             </div>
         `;
         
-        // Bind the event of the temporary confirmation button
         document.getElementById('btnYes')!.onclick = () => {
             inventory.splice(index, 1);
             showInventoryList();
@@ -231,9 +253,7 @@ function deleteItem(): void {
     }
 }
 
-/**
-* Popular product filter.
-* Filter out all items in the 'inventory' array whose 'popular' attribute is true, and display the results in a concise table format. */
+/** Popular product filter.*/
 function showPopularItems(): void {
     const popularItems = inventory.filter(item => item.popular);
     
@@ -246,7 +266,7 @@ function showPopularItems(): void {
             <tr><th>Name</th><th>Category</th><th>Price</th></tr>`;
     
     popularItems.forEach(item => {
-        tableHtml += `<tr><td>${item.name}</td><td>${item.category}</td><td>$${item.price}</td></tr>`;
+        tableHtml += `<tr><td>${item.name}</td><td>${item.category}</td><td>$${item.price.toFixed(2)}</td></tr>`;
     });
     tableHtml += "</table>";
     listEl.innerHTML = tableHtml;
@@ -254,8 +274,7 @@ function showPopularItems(): void {
 
 
 
-/** Make sure to initialize the dropdown menu after the DOM has been fully loaded. */
-window.onload = populateSelects;
+populateSelects();
 
 /** Bind the click event of the HTML button to the corresponding TypeScript function */
 document.getElementById('saveItemBtn')!.onclick = addItem;
